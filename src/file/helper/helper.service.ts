@@ -103,7 +103,7 @@ export class HelperService {
     const now = moment();
     const formatted_dt = now.format('YYYY-MM-DD HH:mm:ss');
     const fileAccessObj = new FileAccess();
-    const modified_user_ip = user_ip.split(".").join()
+    const modified_user_ip = user_ip.split(".").join("_").split(":").join("shamim")
     // fileAccessObj.access_by = user_id;
     fileAccessObj.user_ip = modified_user_ip;
     fileAccessObj.access_time = formatted_dt; // TYPEORM will automatically fill this field with current date time
