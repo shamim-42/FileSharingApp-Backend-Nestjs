@@ -54,6 +54,19 @@ export class HelperService {
     const download_limit_duration = parseInt(
       process.env.DOWNLOAD_LIMIT_DURATION.slice(0, -3),
     );
+    try{
+      const access_data = await this.fileAccessRepository.find({
+        // where: {id: user_id, user_ip: user_ip},
+        where: { user_ip: user_ip },
+        order: {
+          id: 'DESC',
+        },
+        take: download_limit, // take is mimic of sql limit
+      });
+    }
+    catch{
+      return false;
+    }
     const access_data = await this.fileAccessRepository.find({
       // where: {id: user_id, user_ip: user_ip},
       where: { user_ip: user_ip },
