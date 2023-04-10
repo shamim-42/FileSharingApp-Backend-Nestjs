@@ -54,24 +54,8 @@ export class HelperService {
     const download_limit_duration = parseInt(
       process.env.DOWNLOAD_LIMIT_DURATION.slice(0, -3),
     );
-
-    // //very first time when the use tries to download the file it may occur error because of no data in the table. let's user try catch
-    // try {
-    //   await this.fileAccessRepository.find({
-    //     // where: {id: user_id, user_ip: user_ip},
-    //     where: { user_ip: user_ip },
-    //     order: {
-    //       id: 'DESC',
-    //     },
-    //     take: download_limit, // take is mimic of sql limit
-    //   });
-    // } catch {
-    //   return false;
-    // }
-
     
     const access_data = await this.fileAccessRepository.find({
-      // where: {id: user_id, user_ip: user_ip},
       where: { user_ip: user_ip },
       order: {
         id: 'DESC',
@@ -81,6 +65,7 @@ export class HelperService {
 
     // For the first time, no access data we will find. So, rate_limiter should be false.
     if(access_data.length == 0){
+      console.log(access_data.length)
       return false
     }
     console.log(access_data.length)
