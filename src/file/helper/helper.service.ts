@@ -103,8 +103,9 @@ export class HelperService {
     const now = moment();
     const formatted_dt = now.format('YYYY-MM-DD HH:mm:ss');
     const fileAccessObj = new FileAccess();
+    const modified_user_ip = user_ip.split(".").join()
     // fileAccessObj.access_by = user_id;
-    fileAccessObj.user_ip = user_ip;
+    fileAccessObj.user_ip = modified_user_ip;
     fileAccessObj.access_time = formatted_dt; // TYPEORM will automatically fill this field with current date time
     // fileAccessObj.accessed_file = access_file_id // this field is nullable. I am not populating this field at this moment. If needed it can be upgraded later
     const data = await this.fileAccessRepository.save(fileAccessObj);
