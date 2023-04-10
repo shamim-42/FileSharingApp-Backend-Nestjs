@@ -59,13 +59,23 @@ export class HelperService {
     console.log('user ip coming from controller')
     const modified_user_ip = user_ip.toString().split(".").join("_").split(":").join("shamim")
     console.log(modified_user_ip)
-    const access_data = await this.fileAccessRepository.find({
-      where: { user_ip: "shamimshamimffffshamim103_213_236_92" },
-      // order: {
-      //   id: 'DESC',
-      // },
-      // take: download_limit, // take is mimic of sql limit
-    });
+
+
+    // const access_data = await this.fileAccessRepository.find({
+    //   where: { user_ip: "shamimshamimffffshamim103_213_236_92" },
+    //   order: {
+    //     id: 'DESC',
+    //   },
+    //   take: download_limit, // take is mimic of sql limit
+    // });
+
+    const access_data = await this.fileAccessRepository.createQueryBuilder('fileaccess')
+      .where('fileaccess.user_ip=:userIp', {userIp: modified_user_ip})
+      .orderBy('fileaccess.id', 'DESC')
+      .take(download_limit)
+      .getMany();
+
+
 
     console.log('access data');
     console.log(access_data)
