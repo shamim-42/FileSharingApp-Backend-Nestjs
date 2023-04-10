@@ -7,7 +7,7 @@ export class File {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(()=>User , (userInfo)=> userInfo.id, {nullable: true})
+  @ManyToOne(()=>User , (userInfo)=> userInfo.id)
   @JoinColumn()
   uploader: User
 
