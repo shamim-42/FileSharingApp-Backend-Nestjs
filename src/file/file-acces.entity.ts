@@ -12,7 +12,7 @@ export class FileAccess {
   @JoinColumn()
   access_by: User
 
-  @Column("varchar", {length: 16, nullable: true})
+  @Column("varchar", {length: 32, nullable: true})
   user_ip: string;
 
   @Column("varchar", {length: 32})
