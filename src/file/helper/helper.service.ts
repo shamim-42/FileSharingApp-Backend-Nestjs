@@ -90,6 +90,11 @@ export class HelperService {
     const givenTime = moment(last_access_date_time);
     const now = moment();
     const last_access_in_minutes = now.diff(givenTime, 'minutes');
+    console.log('givent time: last access time');
+    console.log(givenTime);
+
+    console.log('now');
+    console.log(now)
     if (last_access_in_minutes > download_limit_duration) {
       return false;
     }
