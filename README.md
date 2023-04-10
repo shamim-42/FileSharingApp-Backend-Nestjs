@@ -48,12 +48,16 @@ AWS_ELASTICACHE_ENDPOINT="aws elasticache endpoint"
 ### File Upload (with simple string keypair)
 
 Endpoint: `/files`
+
 Method: `POST`
+
 Request Body (form data):
+
 |key| value  |
 |--|--|
 | storage_location | `onserver` or `cloud` |
 | file | select file from your machine |
+
 
 Response Body (sample):
 
@@ -69,8 +73,11 @@ Response Body (sample):
 ### File Upload (with rsa keypair): [not recommended]
 
 Endpoint: `/filesRSA`
+
 Method: `POST`
+
 Request Body (form data):
+
 |key| value  |
 |--|--|
 | storage_location | `onserver` or `cloud` |
@@ -90,9 +97,13 @@ Response Body (sample):
 ### File Download
 
 Endpoint: `/files/:publickey`
+
 Method: `GET`
+
 Response Body (sample):
+
 **Note: If you want to provide an RSA public key in the url path it must need to be url encoded**. You can encode it online from this  site: https://www.urlencoder.io/
+
 ```json
 The file will be downloaded automatically
 ```
@@ -102,9 +113,13 @@ The file will be downloaded automatically
 ### File Deletion
 
 Endpoint: `/files/:privatekey`
+
 Method: `DELETE`
+
 Response Body (sample):
+
 **File deletion with RSA private key has some problem as of now.** So I recommend always use Simple KeyPair while uploading as there is no encryption happening inside the code**
+
 ```json
 {
 "status_code":  200,
