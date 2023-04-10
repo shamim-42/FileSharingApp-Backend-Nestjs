@@ -18,6 +18,7 @@
 ```
 #Configurable Options
 FOLDER="uploads"
+PORT=3100
 TIMEZONE="Asia/Dhaka"
 DOWNLOAD_LIMIT=5  #chose any intiger number
 DOWNLOAD_LIMIT_DURATION="1MIN"
