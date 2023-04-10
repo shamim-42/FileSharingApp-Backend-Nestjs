@@ -63,6 +63,8 @@ export class HelperService {
       take: download_limit, // take is mimic of sql limit
     });
 
+    console.log('access data');
+    console.log(access_data)
     // For the first time, no access data we will find. So, rate_limiter should be false.
     if(access_data.length == 0){
       console.log(access_data.length)
@@ -96,10 +98,11 @@ export class HelperService {
     const now = moment();
     const formatted_dt = now.format('YYYY-MM-DD HH:mm:ss');
     const fileAccessObj = new FileAccess();
-    fileAccessObj.access_by = user_id;
+    // fileAccessObj.access_by = user_id;
     fileAccessObj.user_ip = user_ip;
     fileAccessObj.access_time = formatted_dt; // TYPEORM will automatically fill this field with current date time
     // fileAccessObj.accessed_file = access_file_id // this field is nullable. I am not populating this field at this moment. If needed it can be upgraded later
-    await this.fileAccessRepository.save(fileAccessObj);
+    const data = await this.fileAccessRepository.save(fileAccessObj);
+    console.log(data)
   }
 }
