@@ -54,12 +54,13 @@ export class HelperService {
     const download_limit_duration = parseInt(
       process.env.DOWNLOAD_LIMIT_DURATION.slice(0, -3),
     );
-    
+    console.log('download limit')
+    console.log(download_limit)
     const access_data = await this.fileAccessRepository.find({
       where: { user_ip: user_ip },
-      order: {
-        id: 'DESC',
-      },
+      // order: {
+      //   id: 'DESC',
+      // },
       take: download_limit, // take is mimic of sql limit
     });
 
@@ -67,9 +68,11 @@ export class HelperService {
     console.log(access_data)
     // For the first time, no access data we will find. So, rate_limiter should be false.
     if(access_data.length == 0){
+      console.log('access data length')
       console.log(access_data.length)
       return false
     }
+    console.log('access_data length')
     console.log(access_data.length)
 
     const last_access_date_time =
@@ -90,7 +93,7 @@ export class HelperService {
 
   async addEntryInFileAccessTable({
     user_id = null,
-    user_ip = null,
+    user_ip,
     access_time = null,
     access_file_id = null,
   }) {
@@ -103,6 +106,7 @@ export class HelperService {
     fileAccessObj.access_time = formatted_dt; // TYPEORM will automatically fill this field with current date time
     // fileAccessObj.accessed_file = access_file_id // this field is nullable. I am not populating this field at this moment. If needed it can be upgraded later
     const data = await this.fileAccessRepository.save(fileAccessObj);
+    console.log("newly saved access entry")
     console.log(data)
   }
 }
