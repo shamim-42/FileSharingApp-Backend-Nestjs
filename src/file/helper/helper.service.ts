@@ -57,7 +57,7 @@ export class HelperService {
     console.log('download limit')
     console.log(download_limit)
     console.log('user ip coming from controller')
-    const modified_user_ip = user_ip.split(".").join("_").split(":").join("shamim")
+    const modified_user_ip = user_ip.toString().split(".").join("_").split(":").join("shamim")
     console.log(modified_user_ip)
     const access_data = await this.fileAccessRepository.find({
       where: { user_ip: modified_user_ip },
