@@ -42,6 +42,20 @@ export class FileController {
     let pubKey: string = publickey;
     const user_ip = request.ip; // extracting client ipv6
 
+    let user_id: number = 0;
+    /*******  Extracting User id from the Authorization token ********/ 
+    if (headers.authorization) {
+      let token = headers.authorization.slice(7);
+      let data: any = jwt_decode(token);
+      user_id = data.userId;
+    } else {
+      throw new BadRequestException(
+        'You are not allowed to download any file unless you are loggedin!',
+      );
+    }
+    /****************  User ID extraction done **********************/ 
+
+
     /****** We have two different route for this same method. Needs to check whether 
     filesRSA route is being called. If so we need to check whether the user
     providing valied RSA public key or not ********/ 
@@ -57,7 +71,7 @@ export class FileController {
       }
     }
     /****** RSA Public key validation check done **********/
-    const user_id = null //as this version is without authentication, we are keeping user_id null
+
     const data = await this.fileService.getFile(pubKey, user_id, user_ip);
 
     // S3 Object delivering as stream
@@ -83,9 +97,20 @@ export class FileController {
     @Body('storage_location') storage_location: string,
     @UploadedFile('file') file: Express.Multer.File,
   ) {
+    let uploader = 0;
+    if (headers.authorization) {
+      let token = headers.authorization.slice(7);
+      let data: any = jwt_decode(token);
+      uploader = data.userId;
+    } else {
+      throw new BadRequestException(
+        'You are not allowed to upload a photo. Please signin first.',
+      );
+    }
     const uploader_ip = request.ip; // keeping static for the time being
     const filename = file.originalname;
     const result = await this.fileService.saveFileRSA(
+      uploader,
       uploader_ip,
       filename,
       storage_location,
@@ -102,10 +127,21 @@ export class FileController {
     @Body('storage_location') storage_location: string,
     @UploadedFile('file') file: Express.Multer.File,
   ) {
+    let uploader = 0;
+    if (headers.authorization) {
+      let token = headers.authorization.slice(7);
+      let data: any = jwt_decode(token);
+      uploader = data.userId;
+    } else {
+      throw new BadRequestException(
+        'You are not allowed to upload a photo. Please signin first.',
+      );
+    }
     const uploader_ip = request.ip; // keeping static for the time being
     const filename = slugify(file.originalname);
 
     const result = await this.fileService.saveFile(
+      uploader,
       uploader_ip,
       filename,
       storage_location,

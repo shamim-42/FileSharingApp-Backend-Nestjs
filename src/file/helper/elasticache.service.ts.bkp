@@ -11,8 +11,8 @@ export class ElastiCacheService implements OnModuleInit {
     this.client = new AWS.ElastiCache({
       region: 'ap-southeast-1',
       credentials: {
-        // accessKeyId: process.env.AWS_ACCESS_KEY,
-        // secretAccessKey: process.env.AWS_SECRET_ACCESS,
+        // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         accessKeyId: 'AKIA224DOSWBTDQUXDM2',
         secretAccessKey: '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',
       },
