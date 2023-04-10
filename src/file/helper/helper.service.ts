@@ -59,11 +59,11 @@ export class HelperService {
     console.log('user ip coming from controller')
     console.log(user_ip)
     const access_data = await this.fileAccessRepository.find({
-      where: { user_ip: user_ip.toString() },
-      order: {
-        id: 'DESC',
-      },
-      take: download_limit, // take is mimic of sql limit
+      // where: { user_ip: user_ip.toString() },
+      // order: {
+      //   id: 'DESC',
+      // },
+      // take: download_limit, // take is mimic of sql limit
     });
 
     console.log('access data');
