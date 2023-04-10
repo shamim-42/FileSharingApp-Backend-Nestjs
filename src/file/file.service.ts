@@ -113,7 +113,6 @@ export class FileService {
         //Before returning sream of expected file we shoulc add a entry of user access information
         try {
           await this.helperService.addEntryInFileAccessTable({
-            // user_id: null,
             user_ip: user_ip,
           });
         } catch {

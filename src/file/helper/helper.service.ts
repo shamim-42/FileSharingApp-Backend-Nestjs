@@ -56,6 +56,8 @@ export class HelperService {
     );
     console.log('download limit')
     console.log(download_limit)
+    console.log('user ip coming from controller')
+    console.log(user_ip)
     const access_data = await this.fileAccessRepository.find({
       where: { user_ip: user_ip },
       // order: {
