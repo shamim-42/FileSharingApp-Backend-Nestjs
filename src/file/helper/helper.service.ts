@@ -54,20 +54,8 @@ export class HelperService {
     const download_limit_duration = parseInt(
       process.env.DOWNLOAD_LIMIT_DURATION.slice(0, -3),
     );
-    console.log('download limit')
-    console.log(download_limit)
-    console.log('user ip coming from controller')
     const modified_user_ip = user_ip.toString().split(".").join("_").split(":").join("shamim")
-    console.log(modified_user_ip)
 
-
-    // const access_data = await this.fileAccessRepository.find({
-    //   where: { user_ip: "shamimshamimffffshamim103_213_236_92" },
-    //   order: {
-    //     id: 'DESC',
-    //   },
-    //   take: download_limit, // take is mimic of sql limit
-    // });
 
     const access_data = await this.fileAccessRepository.createQueryBuilder('fileaccess')
       .where('fileaccess.user_ip=:userIp', {userIp: modified_user_ip})
@@ -76,28 +64,16 @@ export class HelperService {
       .getMany();
 
 
-
-    console.log('access data');
-    console.log(access_data)
     // For the first time, no access data we will find. So, rate_limiter should be false.
     if(access_data.length == 0){
-      console.log('access data length')
-      console.log(access_data.length)
       return false
     }
-    console.log('access_data length')
-    console.log(access_data.length)
 
     const last_access_date_time =
       access_data[access_data.length - 1].access_time;
     const givenTime = moment(last_access_date_time);
     const now = moment();
     const last_access_in_minutes = now.diff(givenTime, 'minutes');
-    console.log('givent time: last access time');
-    console.log(givenTime);
-
-    console.log('now');
-    console.log(now)
     if (last_access_in_minutes > download_limit_duration) {
       return false;
     }
@@ -120,7 +96,5 @@ export class HelperService {
     fileAccessObj.access_time = formatted_dt; // TYPEORM will automatically fill this field with current date time
     // fileAccessObj.accessed_file = access_file_id // this field is nullable. I am not populating this field at this moment. If needed it can be upgraded later
     const data = await this.fileAccessRepository.save(fileAccessObj);
-    console.log("newly saved access entry")
-    console.log(data)
   }
 }

@@ -71,8 +71,6 @@ export class FileService {
       user_id: null,
       user_ip: user_ip,
     });
-    console.log('rate limiter flag');
-    console.log(rate_limiter_flag);
     if (rate_limiter_flag) {
       // As the user already downloaded the number of files compying our rate limiting number, we should not allow him to proceed forward
       const errorMessage = `<h1 style="color:green">You have reached your limit! Please try ${process.env.DOWNLOAD_LIMIT_DURATION} later of your last download time</h1>`;
