@@ -1,0 +1,64 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { v4 as uuid } from 'uuid';
+import { S3 } from 'aws-sdk';
+import { Readable } from 'stream';
+
+@Injectable()
+export class Awss3Service {
+  async uploadPublicFile(filename: string, dataBuffer: Buffer) {
+    const s3 = new S3();
+    const uploadResult = await s3
+      .upload({
+        Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
+        Body: dataBuffer,
+        Key: `${uuid()}-${filename}`,
+        // ContentType: 'image/jpeg',
+      })
+      .promise();
+    return uploadResult;
+  }
+
+  async getObjectFromS3Url(s3Url: string): Promise<any> {
+    let bucketName = process.env.AWS_PUBLIC_BUCKET_NAME;
+    bucketName = bucketName.split('/').shift();
+
+    const urlParts = s3Url
+      .replace('https://', '')
+      .replace('s3://', '')
+      .split('/');
+    urlParts.shift(); // removing first empty charecters
+    const key = urlParts.join('/'); // constructing the s3 object key
+
+    const s3 = new S3();
+    const params = {
+      Bucket: bucketName,
+      Key: key,
+    };
+    try{
+      const s3Object = await s3.getObject(params).promise();
+      return s3Object;
+    } catch(err){
+      return err
+    }
+
+  }
+  async deleteObjectFromS3(s3Url) {
+    let bucketName = process.env.AWS_PUBLIC_BUCKET_NAME;
+    bucketName = bucketName.split('/').shift();
+
+    const urlParts = s3Url
+      .replace('https://', '')
+      .replace('s3://', '')
+      .split('/');
+    urlParts.shift(); // removing first empty charecters
+    const key = urlParts.join('/'); // constructing the s3 object key
+
+    const s3 = new S3();
+    const result = s3.deleteObject({ Bucket: bucketName, Key: key },(err,data)=>{
+      if(err){
+        console.log('Something went wrong to delete s3 object from cloud')
+      }
+    });
+  }
+}
